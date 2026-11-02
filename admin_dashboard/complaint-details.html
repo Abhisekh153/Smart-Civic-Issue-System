@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Details - Smart Civic Issue Reporting System</title>
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS & JS for OpenStreetMap -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div class="sidebar-title-group">
+        <h2>Smart Civic Portal</h2>
+        <p>Admin Dashboard</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Main Navigation</div>
+      <a href="dashboard.html" class="nav-link">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="complaints.html" class="nav-link active">
+        <i class="fa-solid fa-list-check"></i>
+        <span>Complaints</span>
+      </a>
+      <a href="citizens.html" class="nav-link">
+        <i class="fa-solid fa-users"></i>
+        <span>Citizens</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Reports &amp; Analytics</span>
+      </a>
+
+      <div class="nav-label">External Integration</div>
+      <a href="/api/health" target="_blank" class="nav-link">
+        <i class="fa-solid fa-server"></i>
+        <span>API Health</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="uni-badge">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <div class="uni-badge-text">
+          <h4>Tezpur University</h4>
+          <p>Dept of CSE / MCA</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="main-wrapper">
+    
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebar-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="topbar-title">
+          <h1 id="complaintHeaderTitle">Complaint Details</h1>
+          <p>Detailed verification, photo evidence, GIS coordinates &amp; resolution workflow</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="complaints.html" class="btn btn-outline btn-sm">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back to Complaints</span>
+        </a>
+
+        <div class="admin-profile">
+          <div class="admin-avatar" id="admin-avatar-initials">AD</div>
+          <div class="admin-info">
+            <h4 id="admin-display-name">Administrator</h4>
+            <p id="admin-display-role">ADMIN</p>
+          </div>
+          <button class="logout-btn" onclick="logoutAdmin()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <main class="content">
+
+      <!-- Loading State Overlay -->
+      <div id="pageLoader" style="text-align: center; padding: 60px 0;">
+        <span class="loading-spinner" style="width: 32px; height: 32px;"></span>
+        <p style="margin-top: 12px; color: var(--text-muted);">Retrieving complaint records and audit history...</p>
+      </div>
+
+      <!-- Main Layout -->
+      <div id="complaintContent" class="details-layout" style="display: none;">
+        
+        <!-- Left Column: Evidence, Description, Location Map -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          
+          <!-- Primary Complaint Card -->
+          <div class="card">
+            <div class="card-header">
+              <h2>
+                <i class="fa-solid fa-file-lines"></i>
+                <span id="cardComplaintId">Complaint #--</span>
+              </h2>
+              <div id="cardStatusBadge"></div>
+            </div>
+            <div class="card-body">
+              
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);">
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Category</span>
+                  <div style="font-size: 14px; font-weight: 600; color: var(--primary); margin-top: 4px;" id="valCategory">--</div>
+                </div>
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Submitted By</span>
+                  <div style="font-size: 14px; font-weight: 600; color: var(--text-main); margin-top: 4px;" id="valCitizenName">--</div>
+                  <div style="font-size: 12px; color: var(--text-muted);" id="valCitizenContact">--</div>
+                </div>
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Submission Date</span>
+                  <div style="font-size: 13px; font-weight: 500; color: var(--text-main); margin-top: 4px;" id="valDate">--</div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div style="margin-bottom: 20px;">
+                <h4 style="font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+                  Issue Description
+                </h4>
+                <div style="font-size: 14.5px; line-height: 1.6; color: #1e293b; background: #f8fafc; border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-sm);" id="valDescription">
+                  --
+                </div>
+              </div>
+
+              <!-- Location Address -->
+              <div>
+                <h4 style="font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+                  <i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> Reported Location Address
+                </h4>
+                <div style="font-size: 14px; font-weight: 500; color: #0f172a;" id="valAddress">
+                  --
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;" id="valCoordinates">
+                  Coordinates: --
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Photo Evidence Card -->
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-image"></i> Uploaded Photo Evidence</h2>
+              <span style="font-size: 12px; color: var(--text-muted);">Click photo to enlarge</span>
+            </div>
+            <div class="card-body">
+              <div class="photo-preview-card" id="photoWrapper">
+                <img id="complaintImage" src="" alt="Complaint Evidence Photograph">
+                <div class="photo-badge">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i> View Full Size
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leaflet Location Map Card -->
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-map-pin"></i> Geographical Location (Leaflet / OpenStreetMap)</h2>
+            </div>
+            <div class="card-body" style="padding: 0;">
+              <div id="detailMap" class="map-container"></div>
+            </div>
+            <div style="padding: 10px 20px; font-size: 11.5px; color: var(--text-muted); background: #f8fafc; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between;">
+              <span>Interactive Leaflet Map &bull; Drag or zoom to explore surroundings</span>
+              <span id="mapCoordDisplay">Lat: --, Lng: --</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Status Update Action & Audit Timeline -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+
+          <!-- Update Status Card -->
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-pen-to-square"></i> Update Complaint Status</h2>
+            </div>
+            <div class="card-body">
+              <form id="updateStatusForm">
+                <div class="form-group">
+                  <label for="newStatusSelect">New Status</label>
+                  <select id="newStatusSelect" class="form-control" required>
+                    <option value="Submitted">Submitted</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="adminRemarkText">Admin Remark / Notes</label>
+                  <textarea 
+                    id="adminRemarkText" 
+                    class="form-control" 
+                    placeholder="Enter official remark or action details taken (e.g. Work order issued to civil maintenance cell...)" 
+                    required
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" id="saveStatusBtn">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                  <span>Save Status &amp; Update Timeline</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Status Audit History Timeline Card -->
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-clock-rotate-left"></i> Status Update Timeline</h2>
+            </div>
+            <div class="card-body">
+              <div class="timeline" id="statusHistoryTimeline">
+                <!-- Loaded dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Image Zoom Modal -->
+  <div class="modal-overlay" id="imageModal">
+    <div class="modal-card" style="max-width: 800px; background: #0f172a;">
+      <div class="modal-header" style="border-bottom: 1px solid #1e293b; background: #0f172a; color: #fff;">
+        <h3 style="color: #fff;"><i class="fa-solid fa-image"></i> Evidence Photo View</h3>
+        <button class="modal-close" id="closeImageModalBtn" style="color: #94a3b8;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding: 0; text-align: center;">
+        <img id="zoomImage" src="" alt="Enlarged Evidence" style="max-width: 100%; max-height: 70vh; object-fit: contain;">
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/complaint-details.js"></script>
+</body>
+</html>

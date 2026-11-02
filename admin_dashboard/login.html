@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Smart Civic Issue Reporting System</title>
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    body.login-page {
+      background: radial-gradient(circle at 10% 20%, #0f172a 0%, #1e293b 90%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .login-container {
+      max-width: 440px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      padding: 40px 36px;
+      position: relative;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .login-logo {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 26px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .login-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+    }
+
+    .login-header p {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 6px;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 15px;
+      padding: 4px;
+    }
+
+    .password-toggle-btn:hover {
+      color: #475569;
+    }
+
+    .demo-credentials-box {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      margin-top: 24px;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .demo-credentials-box strong {
+      color: #1e293b;
+    }
+
+    .demo-btn-fill {
+      background: none;
+      border: none;
+      color: #2563eb;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+      float: right;
+    }
+
+    .login-submit-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 14.5px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      background: #1d4ed8;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s ease, transform 0.1s ease;
+      margin-top: 10px;
+    }
+
+    .login-submit-btn:hover {
+      background: #1e40af;
+    }
+
+    .login-submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body class="login-page">
+
+  <div class="login-container">
+    <div class="login-header">
+      <div class="login-logo">
+        <i class="fa-solid fa-building-columns"></i>
+      </div>
+      <h1>Admin Portal</h1>
+      <p>Smart Civic Issue Reporting System<br>Tezpur University</p>
+    </div>
+
+    <!-- Alert Box -->
+    <div id="login-alert" style="display: none; padding: 12px 14px; border-radius: 6px; font-size: 13px; margin-bottom: 20px;"></div>
+
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label for="adminEmail"><i class="fa-regular fa-envelope"></i> Administrator Email</label>
+        <input 
+          type="email" 
+          id="adminEmail" 
+          class="form-control" 
+          placeholder="admin@tezu.ac.in" 
+          required 
+          autocomplete="email"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="adminPassword"><i class="fa-solid fa-lock"></i> Password</label>
+        <div class="password-wrapper">
+          <input 
+            type="password" 
+            id="adminPassword" 
+            class="form-control" 
+            placeholder="Enter your admin password" 
+            required
+            autocomplete="current-password"
+          >
+          <button type="button" class="password-toggle-btn" id="togglePasswordBtn" title="Toggle password visibility">
+            <i class="fa-regular fa-eye" id="togglePasswordIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="login-submit-btn" id="loginSubmitBtn">
+        <span>Sign In to Dashboard</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+
+      <!-- University Presentation Demo Helper -->
+      <div class="demo-credentials-box">
+        <button type="button" class="demo-btn-fill" id="fillDemoBtn">Auto Fill</button>
+        <div><strong>Default Admin:</strong> admin@tezu.ac.in</div>
+        <div style="margin-top: 2px;"><strong>Password:</strong> AdminPassword123</div>
+      </div>
+    </form>
+
+    <div class="login-footer">
+      Tezpur University Minor Project &bull; MCA 2026
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

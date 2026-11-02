@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Management - Smart Civic Issue Reporting System</title>
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS & JS for OpenStreetMap -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div class="sidebar-title-group">
+        <h2>Smart Civic Portal</h2>
+        <p>Admin Dashboard</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Main Navigation</div>
+      <a href="dashboard.html" class="nav-link">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="complaints.html" class="nav-link active">
+        <i class="fa-solid fa-list-check"></i>
+        <span>Complaints</span>
+      </a>
+      <a href="citizens.html" class="nav-link">
+        <i class="fa-solid fa-users"></i>
+        <span>Citizens</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Reports &amp; Analytics</span>
+      </a>
+
+      <div class="nav-label">External Integration</div>
+      <a href="/api/health" target="_blank" class="nav-link">
+        <i class="fa-solid fa-server"></i>
+        <span>API Health</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="uni-badge">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <div class="uni-badge-text">
+          <h4>Tezpur University</h4>
+          <p>Dept of CSE / MCA</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="main-wrapper">
+    
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebar-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="topbar-title">
+          <h1>Civic Complaint Management</h1>
+          <p>Inspect, filter, map, and process registered complaints</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" id="openMapModalBtn">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <span>Campus Map View</span>
+        </button>
+
+        <div class="admin-profile">
+          <div class="admin-avatar" id="admin-avatar-initials">AD</div>
+          <div class="admin-info">
+            <h4 id="admin-display-name">Administrator</h4>
+            <p id="admin-display-role">ADMIN</p>
+          </div>
+          <button class="logout-btn" onclick="logoutAdmin()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <main class="content">
+
+      <!-- Filters & Search Toolbar -->
+      <div class="toolbar card" style="padding: 16px 20px;">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search by ID, Citizen, or Location..."
+          >
+        </div>
+
+        <div class="filter-group">
+          <!-- Category Filter -->
+          <select id="categoryFilter" class="filter-select">
+            <option value="all">All Categories</option>
+            <!-- Loaded dynamically from /api/admin/categories -->
+          </select>
+
+          <!-- Status Filter -->
+          <select id="statusFilter" class="filter-select">
+            <option value="all">All Statuses</option>
+            <option value="Submitted">Submitted</option>
+            <option value="Under Review">Under Review</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+
+          <!-- Sort Filter -->
+          <select id="sortFilter" class="filter-select">
+            <option value="newest">Sort: Newest First</option>
+            <option value="oldest">Sort: Oldest First</option>
+          </select>
+
+          <!-- Reset Filter Button -->
+          <button class="btn btn-outline" id="resetFiltersBtn" title="Reset Filters">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Complaints Data Table Card -->
+      <div class="card">
+        <div class="card-header">
+          <h2>
+            <i class="fa-solid fa-clipboard-list"></i>
+            <span>Complaints Registry</span>
+            <span id="resultsCountBadge" style="font-size: 12px; font-weight: 500; background: var(--primary-light); color: var(--primary); padding: 3px 10px; border-radius: 12px;">-- records</span>
+          </h2>
+        </div>
+        <div class="card-body" style="padding: 0;">
+          <div class="table-responsive">
+            <table class="data-table" id="complaintsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Citizen Name</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Location</th>
+                  <th>Submission Date</th>
+                  <th>Current Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="complaintsTbody">
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 32px;">
+                    <span class="loading-spinner"></span> Loading complaints...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Campus Map Modal (Leaflet OpenStreetMap) -->
+  <div class="modal-overlay" id="mapModal">
+    <div class="modal-card" style="max-width: 900px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-map-location-dot" style="color: var(--primary);"></i> Campus Civic Issues Map</h3>
+        <button class="modal-close" id="closeMapModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding: 0;">
+        <div id="leafletAllMap" style="height: 500px; width: 100%;"></div>
+      </div>
+      <div style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-muted);">
+        <div style="display: flex; gap: 16px;">
+          <span><i class="fa-solid fa-circle" style="color: #e11d48;"></i> Submitted</span>
+          <span><i class="fa-solid fa-circle" style="color: #d97706;"></i> Under Review</span>
+          <span><i class="fa-solid fa-circle" style="color: #2563eb;"></i> In Progress</span>
+          <span><i class="fa-solid fa-circle" style="color: #16a34a;"></i> Resolved</span>
+        </div>
+        <span>OpenStreetMap &bull; Leaflet.js</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/complaints.js"></script>
+</body>
+</html>

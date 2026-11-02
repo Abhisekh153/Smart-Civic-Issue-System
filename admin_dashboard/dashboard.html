@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Overview - Smart Civic Issue Reporting System</title>
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div class="sidebar-title-group">
+        <h2>Smart Civic Portal</h2>
+        <p>Admin Dashboard</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Main Navigation</div>
+      <a href="dashboard.html" class="nav-link active">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="complaints.html" class="nav-link">
+        <i class="fa-solid fa-list-check"></i>
+        <span>Complaints</span>
+      </a>
+      <a href="citizens.html" class="nav-link">
+        <i class="fa-solid fa-users"></i>
+        <span>Citizens</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Reports &amp; Analytics</span>
+      </a>
+
+      <div class="nav-label">External Integration</div>
+      <a href="/api/health" target="_blank" class="nav-link">
+        <i class="fa-solid fa-server"></i>
+        <span>API Health</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="uni-badge">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <div class="uni-badge-text">
+          <h4>Tezpur University</h4>
+          <p>Dept of CSE / MCA</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="main-wrapper">
+    
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebar-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="topbar-title">
+          <h1>Civic Operations Overview</h1>
+          <p>Real-time university campus &amp; municipal grievance tracking</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="live-badge">
+          <span class="live-dot"></span>
+          <span>Live Database</span>
+        </div>
+
+        <div class="admin-profile">
+          <div class="admin-avatar" id="admin-avatar-initials">AD</div>
+          <div class="admin-info">
+            <h4 id="admin-display-name">Administrator</h4>
+            <p id="admin-display-role">ADMIN</p>
+          </div>
+          <button class="logout-btn" onclick="logoutAdmin()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <main class="content">
+
+      <!-- Statistics KPI Cards -->
+      <div class="metrics-grid">
+        <!-- Total Complaints -->
+        <div class="metric-card">
+          <div class="metric-info">
+            <p>Total Complaints</p>
+            <h3 id="stat-total">--</h3>
+          </div>
+          <div class="metric-icon blue">
+            <i class="fa-solid fa-folder-open"></i>
+          </div>
+        </div>
+
+        <!-- Submitted Complaints -->
+        <div class="metric-card">
+          <div class="metric-info">
+            <p>Submitted</p>
+            <h3 id="stat-submitted">--</h3>
+          </div>
+          <div class="metric-icon red">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+        </div>
+
+        <!-- Under Review -->
+        <div class="metric-card">
+          <div class="metric-info">
+            <p>Under Review</p>
+            <h3 id="stat-under-review">--</h3>
+          </div>
+          <div class="metric-icon amber">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+        </div>
+
+        <!-- In Progress -->
+        <div class="metric-card">
+          <div class="metric-info">
+            <p>In Progress</p>
+            <h3 id="stat-in-progress">--</h3>
+          </div>
+          <div class="metric-icon purple">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+          </div>
+        </div>
+
+        <!-- Resolved -->
+        <div class="metric-card">
+          <div class="metric-info">
+            <p>Resolved</p>
+            <h3 id="stat-resolved">--</h3>
+          </div>
+          <div class="metric-icon green">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="grid-2">
+        <!-- Category Distribution Chart -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-chart-pie"></i> Category Distribution</h2>
+            <span style="font-size: 12px; color: var(--text-muted);">By issue domain</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status Distribution Chart -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-chart-column"></i> Complaint Status Breakdown</h2>
+            <span style="font-size: 12px; color: var(--text-muted);">Current lifecycle</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="statusChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Complaints & Recent Activity Grid -->
+      <div class="grid-3-1">
+        
+        <!-- Recent Complaints Table -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Complaints</h2>
+            <a href="complaints.html" class="btn btn-outline btn-sm">
+              <span>View All</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Citizen</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-complaints-tbody">
+                  <tr>
+                    <td colspan="6" style="text-align: center; padding: 24px;">
+                      <span class="loading-spinner"></span> Loading complaints...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-timeline"></i> Recent Updates</h2>
+          </div>
+          <div class="card-body">
+            <div id="activity-feed" class="timeline">
+              <div style="text-align: center; padding: 20px;">
+                <span class="loading-spinner"></span> Loading activity...
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
