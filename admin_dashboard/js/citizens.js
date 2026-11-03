@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadCitizens();
   setupCitizenSearch();
   setupCitizenModal();
+  setupAddCitizenModal();
 });
 
 /** Fetch and Render Citizens Table */
@@ -176,4 +177,62 @@ function setupCitizenModal() {
       modal.classList.remove('active');
     }
   });
+}
+
+/** Setup Add Citizen Modal */
+function setupAddCitizenModal() {
+  const openBtn = document.getElementById('openAddCitizenModalBtn');
+  const closeBtn = document.getElementById('closeAddCitizenModalBtn');
+  const modal = document.getElementById('addCitizenModal');
+  const form = document.getElementById('addCitizenForm');
+  const saveBtn = document.getElementById('saveCitizenBtn');
+
+  if (openBtn && modal) {
+    openBtn.addEventListener('click', () => {
+      form.reset();
+      document.getElementById('newCitizenPassword').value = 'CitizenPass123';
+      modal.classList.add('active');
+    });
+  }
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+  }
+
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+    }
+  });
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('newCitizenName').value.trim();
+      const email = document.getElementById('newCitizenEmail').value.trim();
+      const phone = document.getElementById('newCitizenPhone').value.trim();
+      const password = document.getElementById('newCitizenPassword').value.trim() || 'CitizenPass123';
+
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `<span class="loading-spinner"></span> Registering...`;
+
+      const res = await API.post('/citizens', { name, email, phone, password });
+
+      if (res && res.ok && res.data && res.data.success) {
+        showToast(res.data.message || 'Citizen registered successfully!', 'success');
+        modal.classList.remove('active');
+        form.reset();
+        await loadCitizens();
+      } else {
+        const msg = (res && res.data && res.data.message) || 'Failed to register citizen.';
+        showToast(msg, 'error');
+      }
+
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Register Citizen Account</span>`;
+    });
+  }
 }

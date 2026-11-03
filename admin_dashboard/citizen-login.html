@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Portal - Smart Civic Issue Reporting System</title>
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    body.citizen-auth-page {
+      background: radial-gradient(circle at 10% 20%, #0f172a 0%, #1e3a8a 95%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .auth-card {
+      max-width: 460px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+      padding: 36px 32px;
+      position: relative;
+    }
+
+    .auth-nav-switch {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 12.5px;
+    }
+
+    .auth-nav-switch a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .auth-nav-switch a:hover {
+      text-decoration: underline;
+    }
+
+    .portal-badge {
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 11.5px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 24px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s ease;
+    }
+
+    .auth-tab.active {
+      color: #1d4ed8;
+      border-bottom-color: #1d4ed8;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      font-size: 14.5px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      background: #1d4ed8;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s ease;
+      margin-top: 12px;
+    }
+
+    .btn-submit:hover {
+      background: #1e40af;
+    }
+
+    .demo-box {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #475569;
+    }
+  </style>
+</head>
+<body class="citizen-auth-page">
+
+  <div class="auth-card">
+    
+    <div class="auth-nav-switch">
+      <span class="portal-badge"><i class="fa-solid fa-users"></i> Citizen Services</span>
+      <a href="login.html"><i class="fa-solid fa-shield-halved"></i> Go to Admin Portal &rarr;</a>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+      <div style="width: 52px; height: 52px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; margin-bottom: 12px; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);">
+        <i class="fa-solid fa-bullhorn"></i>
+      </div>
+      <h2 style="font-size: 20px; font-weight: 700; color: #0f172a;">Citizen Grievance Portal</h2>
+      <p style="font-size: 12.5px; color: #64748b; margin-top: 4px;">Report and track public civic issues &bull; Tezpur University</p>
+    </div>
+
+    <!-- Alert Box -->
+    <div id="authAlert" style="display: none; padding: 10px 14px; border-radius: 6px; font-size: 13px; margin-bottom: 16px;"></div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabLogin" onclick="switchTab('login')">
+        <i class="fa-solid fa-right-to-bracket"></i> Sign In
+      </div>
+      <div class="auth-tab" id="tabRegister" onclick="switchTab('register')">
+        <i class="fa-solid fa-user-plus"></i> New Citizen Register
+      </div>
+    </div>
+
+    <!-- 1. Sign In Form -->
+    <form id="citizenLoginForm">
+      <div class="form-group">
+        <label for="citizenEmail"><i class="fa-regular fa-envelope"></i> Citizen Email Address</label>
+        <input type="email" id="citizenEmail" class="form-control" placeholder="name@domain.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="citizenPassword"><i class="fa-solid fa-lock"></i> Password</label>
+        <input type="password" id="citizenPassword" class="form-control" placeholder="Enter your password" required>
+      </div>
+
+      <button type="submit" class="btn-submit" id="loginBtn">
+        <span>Sign In &amp; Report Issue</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+
+      <div class="demo-box">
+        <button type="button" style="background: none; border: none; color: #2563eb; font-size: 11px; font-weight: 600; text-decoration: underline; cursor: pointer; float: right;" id="autoFillCitizenBtn">Auto Fill</button>
+        <div><strong>Sample Citizen:</strong> rahul.sharma@gmail.com</div>
+        <div><strong>Password:</strong> CitizenPass123</div>
+      </div>
+    </form>
+
+    <!-- 2. Registration Form -->
+    <form id="citizenRegisterForm" style="display: none;">
+      <div class="form-group">
+        <label for="regName"><i class="fa-solid fa-user"></i> Full Name</label>
+        <input type="text" id="regName" class="form-control" placeholder="e.g. Kaushik Saikia" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regEmail"><i class="fa-regular fa-envelope"></i> Email Address</label>
+        <input type="email" id="regEmail" class="form-control" placeholder="e.g. kaushik@gmail.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regPhone"><i class="fa-solid fa-phone"></i> Phone Number</label>
+        <input type="tel" id="regPhone" class="form-control" placeholder="e.g. +91 98765 43210" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regPassword"><i class="fa-solid fa-lock"></i> Create Password</label>
+        <input type="password" id="regPassword" class="form-control" placeholder="Minimum 6 characters" required minlength="6">
+      </div>
+
+      <button type="submit" class="btn-submit" id="registerBtn">
+        <span>Create Citizen Account</span>
+        <i class="fa-solid fa-user-check"></i>
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px; font-size: 11.5px; color: #94a3b8;">
+      Tezpur University Smart Civic System &bull; MCA 2026
+    </div>
+
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="js/api.js"></script>
+  <script>
+    function switchTab(tab) {
+      const loginTab = document.getElementById('tabLogin');
+      const regTab = document.getElementById('tabRegister');
+      const loginForm = document.getElementById('citizenLoginForm');
+      const regForm = document.getElementById('citizenRegisterForm');
+      const alertBox = document.getElementById('authAlert');
+      alertBox.style.display = 'none';
+
+      if (tab === 'login') {
+        loginTab.classList.add('active');
+        regTab.classList.remove('active');
+        loginForm.style.display = 'block';
+        regForm.style.display = 'none';
+      } else {
+        regTab.classList.add('active');
+        loginTab.classList.remove('active');
+        regForm.style.display = 'block';
+        loginForm.style.display = 'none';
+      }
+    }
+
+    // Auto Fill Demo Citizen
+    document.getElementById('autoFillCitizenBtn').addEventListener('click', () => {
+      document.getElementById('citizenEmail').value = 'rahul.sharma@gmail.com';
+      document.getElementById('citizenPassword').value = 'CitizenPass123';
+      showToast('Sample citizen credentials filled!', 'info');
+    });
+
+    function showAlert(msg, type = 'error') {
+      const alertBox = document.getElementById('authAlert');
+      alertBox.style.display = 'block';
+      alertBox.textContent = msg;
+      if (type === 'error') {
+        alertBox.style.backgroundColor = '#fee2e2';
+        alertBox.style.color = '#b91c1c';
+        alertBox.style.border = '1px solid #fecaca';
+      } else {
+        alertBox.style.backgroundColor = '#dcfce7';
+        alertBox.style.color = '#15803d';
+        alertBox.style.border = '1px solid #bbf7d0';
+      }
+    }
+
+    // Handle Login
+    document.getElementById('citizenLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('citizenEmail').value.trim();
+      const password = document.getElementById('citizenPassword').value;
+      const btn = document.getElementById('loginBtn');
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="loading-spinner"></span> Authenticating...`;
+
+      try {
+        const res = await fetch('/api/citizen/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          localStorage.setItem('activeCitizen', JSON.stringify(data.user));
+          showToast('Welcome, ' + data.user.name + '!', 'success');
+          showAlert('Login successful! Redirecting to Citizen Portal...', 'success');
+          setTimeout(() => {
+            window.location.href = 'citizen-portal.html';
+          }, 800);
+        } else {
+          showAlert(data.message || 'Invalid citizen email or password.', 'error');
+        }
+      } catch (err) {
+        showAlert('Server connection error. Make sure Flask is running.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Sign In &amp; Report Issue</span> <i class="fa-solid fa-arrow-right"></i>`;
+      }
+    });
+
+    // Handle Registration
+    document.getElementById('citizenRegisterForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const btn = document.getElementById('registerBtn');
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="loading-spinner"></span> Registering...`;
+
+      try {
+        const res = await fetch('/api/citizen/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone, password })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          localStorage.setItem('activeCitizen', JSON.stringify(data.user));
+          showToast('Account created successfully!', 'success');
+          showAlert('Account registered! Taking you to portal...', 'success');
+          setTimeout(() => {
+            window.location.href = 'citizen-portal.html';
+          }, 800);
+        } else {
+          showAlert(data.message || 'Registration failed.', 'error');
+        }
+      } catch (err) {
+        showAlert('Server connection error.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Create Citizen Account</span> <i class="fa-solid fa-user-check"></i>`;
+      }
+    });
+  </script>
+</body>
+</html>
