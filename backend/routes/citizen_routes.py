@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from backend.database import query_db
+from werkzeug.security import generate_password_hash
+from backend.database import query_db, execute_db
 from backend.routes.auth_routes import admin_required
 
 citizen_bp = Blueprint('citizen_bp', __name__, url_prefix='/api/admin/citizens')
@@ -69,3 +70,33 @@ def get_citizen_detail(user_id):
         'complaints': complaints,
         'complaints_count': len(complaints)
     }), 200
+
+@citizen_bp.route('', methods=['POST'])
+@admin_required
+def create_citizen_by_admin():
+    """Allows an administrator to register a citizen directly from the admin panel."""
+    data = request.get_json() or {}
+    name = data.get('name', '').strip()
+    email = data.get('email', '').strip().lower()
+    phone = data.get('phone', '').strip()
+    password = data.get('password', 'CitizenPass123')
+
+    if not name or not email:
+        return jsonify({'success': False, 'message': 'Name and email are required.'}), 400
+
+    existing = query_db("SELECT user_id FROM users WHERE LOWER(email) = %s", (email,), one=True)
+    if existing:
+        return jsonify({'success': False, 'message': 'A user with this email already exists.'}), 409
+
+    pass_hash = generate_password_hash(password)
+    user_id = execute_db(
+        """INSERT INTO users (name, email, phone, password_hash, role)
+           VALUES (%s, %s, %s, %s, 'citizen')""",
+        (name, email, phone, pass_hash)
+    )
+
+    return jsonify({
+        'success': True,
+        'message': f'Citizen "{name}" successfully registered.',
+        'user_id': user_id
+    }), 201

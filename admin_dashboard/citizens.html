@@ -49,6 +49,16 @@
         <span>Reports &amp; Analytics</span>
       </a>
 
+      <div class="nav-label">Citizen App &amp; Services</div>
+      <a href="citizen-portal.html" target="_blank" class="nav-link">
+        <i class="fa-solid fa-bullhorn"></i>
+        <span>Citizen Grievance Portal</span>
+      </a>
+      <a href="report-issue.html" target="_blank" class="nav-link">
+        <i class="fa-solid fa-camera"></i>
+        <span>File Citizen Complaint</span>
+      </a>
+
       <div class="nav-label">External Integration</div>
       <a href="/api/health" target="_blank" class="nav-link">
         <i class="fa-solid fa-server"></i>
@@ -83,6 +93,11 @@
       </div>
 
       <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" id="openAddCitizenModalBtn">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Register Citizen</span>
+        </button>
+
         <div class="admin-profile">
           <div class="admin-avatar" id="admin-avatar-initials">AD</div>
           <div class="admin-info">
@@ -198,6 +213,40 @@
           </table>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Citizen Modal -->
+  <div class="modal-overlay" id="addCitizenModal">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-plus" style="color: var(--primary);"></i> Register New Citizen</h3>
+        <button class="modal-close" id="closeAddCitizenModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="addCitizenForm">
+          <div class="form-group">
+            <label for="newCitizenName">Full Name</label>
+            <input type="text" id="newCitizenName" class="form-control" placeholder="e.g. Bhupen Hazarika" required>
+          </div>
+          <div class="form-group">
+            <label for="newCitizenEmail">Email Address</label>
+            <input type="email" id="newCitizenEmail" class="form-control" placeholder="e.g. bhupen@tezu.ac.in" required>
+          </div>
+          <div class="form-group">
+            <label for="newCitizenPhone">Phone Number</label>
+            <input type="tel" id="newCitizenPhone" class="form-control" placeholder="e.g. +91 94350 11223" required>
+          </div>
+          <div class="form-group">
+            <label for="newCitizenPassword">Password</label>
+            <input type="password" id="newCitizenPassword" class="form-control" placeholder="Default: CitizenPass123" value="CitizenPass123">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" id="saveCitizenBtn">
+            <i class="fa-solid fa-check"></i>
+            <span>Register Citizen Account</span>
+          </button>
+        </form>
       </div>
     </div>
   </div>
