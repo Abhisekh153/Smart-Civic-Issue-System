@@ -123,7 +123,7 @@ DB_TYPE=mysql
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
-DB_PASSWORD=your_mysql_password
+DB_PASSWORD=AdminPasswor
 DB_NAME=civic_issue_db
 ```
 
