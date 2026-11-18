@@ -1,11 +1,21 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  View, StyleSheet, Pressable, Text, StatusBar,
+  View,
+  StyleSheet,
+  Pressable,
+  Text,
+  StatusBar,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { COLORS as C } from "./constants/theme";
+import {
+  googleLogin,
+  getSavedToken,
+  getCurrentUser,
+  logout,
+} from "./app/services/authService";
 
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import SignupScreen from "./app/screens/SignupScreen";
@@ -26,6 +36,47 @@ type Screen =
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("welcome");
+  const [user, setUser] = useState<any>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function restoreSession() {
+      try {
+        const savedToken = await getSavedToken();
+
+        if (savedToken) {
+          const currentUser = await getCurrentUser(savedToken);
+          setToken(savedToken);
+          setUser(currentUser.user ?? currentUser);
+          setScreen("home");
+        }
+      } catch {
+        await logout();
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    restoreSession();
+  }, []);
+
+  async function handleGoogleLogin() {
+    const result = await googleLogin();
+
+    if (result) {
+      setToken(result.token);
+      setUser(result.user);
+      setScreen("home");
+    }
+  }
+
+  async function handleLogout() {
+    await logout();
+    setToken(null);
+    setUser(null);
+    setScreen("welcome");
+  }
 
   const navigate = (next: string) => {
     setScreen(next as Screen);
@@ -38,31 +89,66 @@ export default function App() {
     "profile",
   ].includes(screen);
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <StatusBar barStyle="dark-content" />
+        <ActivityIndicator size="large" color={C.primary} />
+      </View>
+    );
+  }
+
   function renderScreen() {
     switch (screen) {
       case "welcome":
-        return <WelcomeScreen onNavigate={navigate} />;
+        return (
+          <WelcomeScreen
+            onNavigate={navigate}
+            onGoogleLogin={handleGoogleLogin}
+          />
+        );
 
       case "signup":
-        return <SignupScreen onNavigate={navigate} />;
+        return (
+          <SignupScreen
+            onNavigate={navigate}
+            onGoogleLogin={handleGoogleLogin}
+          />
+        );
 
       case "login":
-        return <LoginScreen onNavigate={navigate} />;
+        return (
+          <LoginScreen
+            onNavigate={navigate}
+            onGoogleLogin={handleGoogleLogin}
+          />
+        );
 
       case "home":
-        return <HomeScreen onNavigate={navigate} />;
+        return <HomeScreen onNavigate={navigate} user={user} token={token} />;
 
       case "report":
-        return <ReportScreen />;
+        return <ReportScreen user={user} token={token} />;
 
       case "reports":
-        return <ReportsScreen />;
+        return <ReportsScreen user={user} token={token} />;
 
       case "profile":
-        return <ProfileScreen />;
+        return (
+          <ProfileScreen
+            user={user}
+            token={token}
+            onLogout={handleLogout}
+          />
+        );
 
       default:
-        return <WelcomeScreen onNavigate={navigate} />;
+        return (
+          <WelcomeScreen
+            onNavigate={navigate}
+            onGoogleLogin={handleGoogleLogin}
+          />
+        );
     }
   }
 
@@ -75,13 +161,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="dark-content"
-      />
+      <StatusBar barStyle="dark-content" />
 
-      <View style={styles.screen}>
-        {renderScreen()}
-      </View>
+      <View style={styles.screen}>{renderScreen()}</View>
 
       {isMainScreen && (
         <View style={styles.bottomBar}>
@@ -94,21 +176,28 @@ export default function App() {
                 style={styles.tab}
                 onPress={() => navigate(tab.name)}
               >
-                <View style={[
-                  styles.tabIcon,
-                  active && tab.name === "report" && styles.reportIcon,
-                ]}>
+                <View
+                  style={[
+                    styles.tabIcon,
+                    active && tab.name === "report" && styles.reportIcon,
+                  ]}
+                >
                   <Ionicons
                     name={tab.icon as any}
                     size={tab.name === "report" ? 29 : 23}
-                    color={active ? C.primary : "#8A9992"}
+                    color={
+                      active
+                        ? tab.name === "report"
+                          ? C.white
+                          : C.primary
+                        : "#8A9992"
+                    }
                   />
                 </View>
 
-                <Text style={[
-                  styles.tabLabel,
-                  active && styles.activeLabel,
-                ]}>
+                <Text
+                  style={[styles.tabLabel, active && styles.activeLabel]}
+                >
                   {tab.label}
                 </Text>
               </Pressable>
@@ -124,6 +213,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: C.background,
+  },
+
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: C.background,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   screen: {
