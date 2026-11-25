@@ -3,212 +3,489 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Citizen Portal - Smart Civic Issue Reporting System</title>
+  <title>Civic Intelligence - Join Your Community</title>
   
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 
   <style>
-    body.citizen-auth-page {
-      background: radial-gradient(circle at 10% 20%, #0f172a 0%, #1e3a8a 95%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    body.auth-split-body {
+      background-color: #ffffff;
       min-height: 100vh;
-      padding: 24px;
+      display: flex;
+      align-items: stretch;
+      padding: 0;
+      margin: 0;
     }
 
-    .auth-card {
-      max-width: 460px;
-      width: 100%;
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
-      padding: 36px 32px;
+    .split-container {
+      display: flex;
+      width: 100vw;
+      min-height: 100vh;
+    }
+
+    /* Left Hero Side (Images 1 & 3) */
+    .split-left-panel {
+      flex: 1.1;
+      background: #eaf3ed;
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       position: relative;
     }
 
-    .auth-nav-switch {
+    .hero-art-box {
+      background: #e0eee4;
+      border-radius: var(--radius-lg);
+      padding: 40px;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      margin-bottom: 24px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border-color);
-      font-size: 12.5px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
     }
 
-    .auth-nav-switch a {
+    .hero-art-box img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+    }
+
+    .feature-item-pill {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(8px);
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      margin-top: 14px;
+      width: 100%;
+    }
+
+    .feature-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--primary-light);
       color: var(--primary);
-      text-decoration: none;
-      font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
     }
 
-    .auth-nav-switch a:hover {
-      text-decoration: underline;
-    }
-
-    .portal-badge {
-      background: #eff6ff;
-      color: #1d4ed8;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 11.5px;
-    }
-
-    .auth-tabs {
-      display: flex;
-      border-bottom: 2px solid #e2e8f0;
-      margin-bottom: 24px;
-    }
-
-    .auth-tab {
+    /* Right Form Side */
+    .split-right-panel {
       flex: 1;
-      text-align: center;
-      padding: 10px 0;
-      font-size: 14px;
-      font-weight: 600;
-      color: #64748b;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -2px;
+      background: #ffffff;
+      padding: 48px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 580px;
+    }
+
+    .back-btn-pill {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #374151;
+      text-decoration: none;
+      margin-bottom: 28px;
       transition: all 0.2s ease;
     }
 
-    .auth-tab.active {
-      color: #1d4ed8;
-      border-bottom-color: #1d4ed8;
+    .back-btn-pill:hover {
+      background: var(--primary-light);
+      color: var(--primary);
     }
 
-    .btn-submit {
+    .brand-header-inline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .brand-header-inline img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .brand-header-inline h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #111827;
+      line-height: 1.1;
+    }
+
+    .brand-header-inline span {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #596761;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .form-section-tag {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .form-heading {
+      font-size: 28px;
+      font-weight: 800;
+      color: #111827;
+      letter-spacing: -0.6px;
+      margin-bottom: 8px;
+    }
+
+    .form-subtext {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .input-field-wrap {
+      position: relative;
+    }
+
+    .input-field-wrap input {
       width: 100%;
-      padding: 12px;
-      font-size: 14.5px;
-      font-weight: 600;
+      padding: 13px 16px 13px 44px;
+      border: 1px solid #d1d5db;
       border-radius: var(--radius-sm);
-      background: #1d4ed8;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s ease;
+      background: #fafafa;
+    }
+
+    .input-field-wrap input:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(24, 78, 56, 0.12);
+    }
+
+    .input-icon-left {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      font-size: 15px;
+    }
+
+    .password-eye-toggle {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #9ca3af;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .btn-dark-green {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: var(--primary);
       color: #ffffff;
       border: none;
+      font-size: 14.5px;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       transition: background 0.2s ease;
-      margin-top: 12px;
+      margin-top: 14px;
     }
 
-    .btn-submit:hover {
-      background: #1e40af;
+    .btn-dark-green:hover {
+      background: var(--primary-hover);
     }
 
-    .demo-box {
-      background: #f8fafc;
-      border: 1px dashed #cbd5e1;
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
-      margin-top: 20px;
+    .divider-text {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #9ca3af;
       font-size: 12px;
-      color: #475569;
+      font-weight: 500;
+      margin: 20px 0;
+    }
+
+    .divider-text::before,
+    .divider-text::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .divider-text span {
+      padding: 0 12px;
+    }
+
+    .btn-social-outline {
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #374151;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-social-outline:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
+
+    .auth-mode-toggle {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+
+    .auth-mode-toggle a {
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .auth-mode-toggle a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 960px) {
+      .split-left-panel {
+        display: none;
+      }
+      .split-right-panel {
+        max-width: 100%;
+        padding: 36px 24px;
+      }
     }
   </style>
 </head>
-<body class="citizen-auth-page">
+<body class="auth-split-body">
 
-  <div class="auth-card">
+  <div class="split-container">
     
-    <div class="auth-nav-switch">
-      <span class="portal-badge"><i class="fa-solid fa-users"></i> Citizen Services</span>
-      <a href="login.html"><i class="fa-solid fa-shield-halved"></i> Go to Admin Portal &rarr;</a>
+    <!-- Left Hero Illustration Side (Matching Images 1 & 3) -->
+    <div class="split-left-panel">
+      <div style="max-width: 480px; margin: 0 auto; width: 100%;">
+        
+        <div class="hero-art-box">
+          <img src="assets/hero_illustration.svg" alt="Civic Intelligence Community">
+        </div>
+
+        <div style="margin-top: 32px;">
+          <div style="font-size: 11px; font-weight: 800; color: var(--primary); letter-spacing: 1.5px; text-transform: uppercase;">
+            Civic Intelligence
+          </div>
+          <h2 style="font-size: 26px; font-weight: 800; color: #111827; letter-spacing: -0.5px; margin-top: 6px;">
+            Make your neighbourhood better.
+          </h2>
+          <p style="font-size: 13.5px; color: #596761; margin-top: 6px; line-height: 1.5;">
+            Report civic issues, share photographic evidence and help municipal authorities understand what needs attention.
+          </p>
+        </div>
+
+        <div style="margin-top: 18px;">
+          <div class="feature-item-pill">
+            <div class="feature-icon-wrap"><i class="fa-solid fa-camera"></i></div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #111827;">Report an issue</div>
+              <div style="font-size: 11.5px; color: #64748b;">Share a photo, pin location and describe what happened.</div>
+            </div>
+          </div>
+
+          <div class="feature-item-pill">
+            <div class="feature-icon-wrap"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #111827;">AI-assisted analysis</div>
+              <div style="font-size: 11.5px; color: #64748b;">Categorizes and dispatches to the correct campus department.</div>
+            </div>
+          </div>
+
+          <div class="feature-item-pill">
+            <div class="feature-icon-wrap"><i class="fa-solid fa-route"></i></div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #111827;">Track progress</div>
+              <div style="font-size: 11.5px; color: #64748b;">Follow every status update and remark through to resolution.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div style="text-align: center; margin-bottom: 20px;">
-      <div style="width: 52px; height: 52px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; margin-bottom: 12px; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);">
-        <i class="fa-solid fa-bullhorn"></i>
-      </div>
-      <h2 style="font-size: 20px; font-weight: 700; color: #0f172a;">Citizen Grievance Portal</h2>
-      <p style="font-size: 12.5px; color: #64748b; margin-top: 4px;">Report and track public civic issues &bull; Tezpur University</p>
-    </div>
-
-    <!-- Alert Box -->
-    <div id="authAlert" style="display: none; padding: 10px 14px; border-radius: 6px; font-size: 13px; margin-bottom: 16px;"></div>
-
-    <!-- Tabs -->
-    <div class="auth-tabs">
-      <div class="auth-tab active" id="tabLogin" onclick="switchTab('login')">
-        <i class="fa-solid fa-right-to-bracket"></i> Sign In
-      </div>
-      <div class="auth-tab" id="tabRegister" onclick="switchTab('register')">
-        <i class="fa-solid fa-user-plus"></i> New Citizen Register
-      </div>
-    </div>
-
-    <!-- 1. Sign In Form -->
-    <form id="citizenLoginForm">
-      <div class="form-group">
-        <label for="citizenEmail"><i class="fa-regular fa-envelope"></i> Citizen Email Address</label>
-        <input type="email" id="citizenEmail" class="form-control" placeholder="name@domain.com" required>
+    <!-- Right Form Side (Matching Image 1) -->
+    <div class="split-right-panel">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <a href="citizen-portal.html" class="back-btn-pill" title="Back">
+          <i class="fa-solid fa-chevron-left"></i>
+        </a>
+        <a href="login.html" style="font-size: 12px; font-weight: 700; color: var(--primary); text-decoration: none;">
+          Admin Portal <i class="fa-solid fa-arrow-right"></i>
+        </a>
       </div>
 
-      <div class="form-group">
-        <label for="citizenPassword"><i class="fa-solid fa-lock"></i> Password</label>
-        <input type="password" id="citizenPassword" class="form-control" placeholder="Enter your password" required>
+      <div class="brand-header-inline">
+        <img src="assets/civic_logo.svg" alt="Civic Logo">
+        <div>
+          <h2>Civic</h2>
+          <span>Intelligence</span>
+        </div>
       </div>
 
-      <button type="submit" class="btn-submit" id="loginBtn">
-        <span>Sign In &amp; Report Issue</span>
-        <i class="fa-solid fa-arrow-right"></i>
-      </button>
+      <!-- Alert Message Box -->
+      <div id="authAlert" style="display: none; padding: 12px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 20px;"></div>
 
-      <div class="demo-box">
-        <button type="button" style="background: none; border: none; color: #2563eb; font-size: 11px; font-weight: 600; text-decoration: underline; cursor: pointer; float: right;" id="autoFillCitizenBtn">Auto Fill</button>
-        <div><strong>Sample Citizen:</strong> rahul.sharma@gmail.com</div>
-        <div><strong>Password:</strong> CitizenPass123</div>
+      <!-- Sign In View (Default) -->
+      <div id="viewSignIn">
+        <div class="form-section-tag">Welcome Back</div>
+        <h1 class="form-heading">Sign in to your account</h1>
+        <p class="form-subtext">Access your reported grievances and track real-time resolution.</p>
+
+        <form id="formSignIn">
+          <div class="form-group">
+            <label for="loginEmail">Email address</label>
+            <div class="input-field-wrap">
+              <i class="fa-regular fa-envelope input-icon-left"></i>
+              <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <div class="input-field-wrap">
+              <i class="fa-solid fa-lock input-icon-left"></i>
+              <input type="password" id="loginPassword" placeholder="Minimum 6 characters" required autocomplete="current-password">
+              <button type="button" class="password-eye-toggle" onclick="togglePassVisibility('loginPassword', this)">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-dark-green" id="btnSubmitLogin">
+            <span>Sign in</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+
+        <div class="divider-text">
+          <span>or continue with</span>
+        </div>
+
+        <button type="button" class="btn-social-outline" id="btnAutoFillDemo">
+          <i class="fa-solid fa-user-check" style="color: var(--primary);"></i>
+          <span>Auto Fill Demo Citizen Account</span>
+        </button>
+
+        <div class="auth-mode-toggle">
+          Don't have an account? <a href="javascript:void(0)" onclick="toggleAuthView('register')">Create account</a>
+        </div>
       </div>
-    </form>
 
-    <!-- 2. Registration Form -->
-    <form id="citizenRegisterForm" style="display: none;">
-      <div class="form-group">
-        <label for="regName"><i class="fa-solid fa-user"></i> Full Name</label>
-        <input type="text" id="regName" class="form-control" placeholder="e.g. Kaushik Saikia" required>
+      <!-- Registration View -->
+      <div id="viewRegister" style="display: none;">
+        <div class="form-section-tag">Join Your Community</div>
+        <h1 class="form-heading">Create your account</h1>
+        <p class="form-subtext">Start reporting and tracking issues in your neighbourhood.</p>
+
+        <form id="formRegister">
+          <div class="form-group">
+            <label for="regName">Full name</label>
+            <div class="input-field-wrap">
+              <i class="fa-regular fa-user input-icon-left"></i>
+              <input type="text" id="regName" placeholder="Enter your full name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="regEmail">Email address</label>
+            <div class="input-field-wrap">
+              <i class="fa-regular fa-envelope input-icon-left"></i>
+              <input type="email" id="regEmail" placeholder="you@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="regPhone">Phone number</label>
+            <div class="input-field-wrap">
+              <i class="fa-solid fa-phone input-icon-left"></i>
+              <input type="tel" id="regPhone" placeholder="+91 98765 43210" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="regPassword">Password</label>
+            <div class="input-field-wrap">
+              <i class="fa-solid fa-lock input-icon-left"></i>
+              <input type="password" id="regPassword" placeholder="Minimum 6 characters" required minlength="6">
+              <button type="button" class="password-eye-toggle" onclick="togglePassVisibility('regPassword', this)">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-dark-green" id="btnSubmitRegister">
+            <span>Create account</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+
+        <div class="divider-text">
+          <span>or continue with</span>
+        </div>
+
+        <button type="button" class="btn-social-outline" onclick="showToast('Google OAuth available in production setup', 'info')">
+          <i class="fa-brands fa-google" style="color: #ea4335;"></i>
+          <span>Continue with Google</span>
+        </button>
+
+        <div class="auth-mode-toggle">
+          Already have an account? <a href="javascript:void(0)" onclick="toggleAuthView('signin')">Sign in</a>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="regEmail"><i class="fa-regular fa-envelope"></i> Email Address</label>
-        <input type="email" id="regEmail" class="form-control" placeholder="e.g. kaushik@gmail.com" required>
-      </div>
-
-      <div class="form-group">
-        <label for="regPhone"><i class="fa-solid fa-phone"></i> Phone Number</label>
-        <input type="tel" id="regPhone" class="form-control" placeholder="e.g. +91 98765 43210" required>
-      </div>
-
-      <div class="form-group">
-        <label for="regPassword"><i class="fa-solid fa-lock"></i> Create Password</label>
-        <input type="password" id="regPassword" class="form-control" placeholder="Minimum 6 characters" required minlength="6">
-      </div>
-
-      <button type="submit" class="btn-submit" id="registerBtn">
-        <span>Create Citizen Account</span>
-        <i class="fa-solid fa-user-check"></i>
-      </button>
-    </form>
-
-    <div style="text-align: center; margin-top: 20px; font-size: 11.5px; color: #94a3b8;">
-      Tezpur University Smart Civic System &bull; MCA 2026
     </div>
 
   </div>
@@ -217,33 +494,32 @@
 
   <script src="js/api.js"></script>
   <script>
-    function switchTab(tab) {
-      const loginTab = document.getElementById('tabLogin');
-      const regTab = document.getElementById('tabRegister');
-      const loginForm = document.getElementById('citizenLoginForm');
-      const regForm = document.getElementById('citizenRegisterForm');
+    function toggleAuthView(mode) {
+      const vSignIn = document.getElementById('viewSignIn');
+      const vRegister = document.getElementById('viewRegister');
       const alertBox = document.getElementById('authAlert');
       alertBox.style.display = 'none';
 
-      if (tab === 'login') {
-        loginTab.classList.add('active');
-        regTab.classList.remove('active');
-        loginForm.style.display = 'block';
-        regForm.style.display = 'none';
+      if (mode === 'register') {
+        vSignIn.style.display = 'none';
+        vRegister.style.display = 'block';
       } else {
-        regTab.classList.add('active');
-        loginTab.classList.remove('active');
-        regForm.style.display = 'block';
-        loginForm.style.display = 'none';
+        vRegister.style.display = 'none';
+        vSignIn.style.display = 'block';
       }
     }
 
-    // Auto Fill Demo Citizen
-    document.getElementById('autoFillCitizenBtn').addEventListener('click', () => {
-      document.getElementById('citizenEmail').value = 'rahul.sharma@gmail.com';
-      document.getElementById('citizenPassword').value = 'CitizenPass123';
-      showToast('Sample citizen credentials filled!', 'info');
-    });
+    function togglePassVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-regular fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-regular fa-eye';
+      }
+    }
 
     function showAlert(msg, type = 'error') {
       const alertBox = document.getElementById('authAlert');
@@ -260,12 +536,19 @@
       }
     }
 
-    // Handle Login
-    document.getElementById('citizenLoginForm').addEventListener('submit', async (e) => {
+    // Auto Fill Demo Citizen
+    document.getElementById('btnAutoFillDemo').addEventListener('click', () => {
+      document.getElementById('loginEmail').value = 'rahul.sharma@gmail.com';
+      document.getElementById('loginPassword').value = 'CitizenPass123';
+      showToast('Demo citizen credentials filled!', 'info');
+    });
+
+    // Handle Login Submit
+    document.getElementById('formSignIn').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('citizenEmail').value.trim();
-      const password = document.getElementById('citizenPassword').value;
-      const btn = document.getElementById('loginBtn');
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const btn = document.getElementById('btnSubmitLogin');
 
       btn.disabled = true;
       btn.innerHTML = `<span class="loading-spinner"></span> Authenticating...`;
@@ -280,33 +563,33 @@
 
         if (res.ok && data.success) {
           localStorage.setItem('activeCitizen', JSON.stringify(data.user));
-          showToast('Welcome, ' + data.user.name + '!', 'success');
-          showAlert('Login successful! Redirecting to Citizen Portal...', 'success');
+          showToast(`Welcome back, ${data.user.name}!`, 'success');
+          showAlert('Login successful! Redirecting...', 'success');
           setTimeout(() => {
             window.location.href = 'citizen-portal.html';
-          }, 800);
+          }, 700);
         } else {
-          showAlert(data.message || 'Invalid citizen email or password.', 'error');
+          showAlert(data.message || 'Invalid email or password.', 'error');
         }
       } catch (err) {
-        showAlert('Server connection error. Make sure Flask is running.', 'error');
+        showAlert('Could not connect to the backend server.', 'error');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>Sign In &amp; Report Issue</span> <i class="fa-solid fa-arrow-right"></i>`;
+        btn.innerHTML = `<span>Sign in</span> <i class="fa-solid fa-arrow-right"></i>`;
       }
     });
 
-    // Handle Registration
-    document.getElementById('citizenRegisterForm').addEventListener('submit', async (e) => {
+    // Handle Register Submit
+    document.getElementById('formRegister').addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('regName').value.trim();
       const email = document.getElementById('regEmail').value.trim();
       const phone = document.getElementById('regPhone').value.trim();
       const password = document.getElementById('regPassword').value;
-      const btn = document.getElementById('registerBtn');
+      const btn = document.getElementById('btnSubmitRegister');
 
       btn.disabled = true;
-      btn.innerHTML = `<span class="loading-spinner"></span> Registering...`;
+      btn.innerHTML = `<span class="loading-spinner"></span> Creating account...`;
 
       try {
         const res = await fetch('/api/citizen/register', {
@@ -318,19 +601,19 @@
 
         if (res.ok && data.success) {
           localStorage.setItem('activeCitizen', JSON.stringify(data.user));
-          showToast('Account created successfully!', 'success');
-          showAlert('Account registered! Taking you to portal...', 'success');
+          showToast('Account registered successfully!', 'success');
+          showAlert('Account created! Taking you to the portal...', 'success');
           setTimeout(() => {
             window.location.href = 'citizen-portal.html';
-          }, 800);
+          }, 700);
         } else {
           showAlert(data.message || 'Registration failed.', 'error');
         }
       } catch (err) {
-        showAlert('Server connection error.', 'error');
+        showAlert('Could not connect to backend server.', 'error');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>Create Citizen Account</span> <i class="fa-solid fa-user-check"></i>`;
+        btn.innerHTML = `<span>Create account</span> <i class="fa-solid fa-arrow-right"></i>`;
       }
     });
   </script>

@@ -53,12 +53,12 @@ function renderCategoryChart(data) {
   const labels = data.map(d => d.category_name);
   const counts = data.map(d => d.count);
   const colors = [
-    '#2563eb', // Blue
-    '#f59e0b', // Amber
-    '#06b6d4', // Cyan
-    '#8b5cf6', // Violet
-    '#ec4899', // Pink
-    '#10b981'  // Emerald
+    '#184e38', // Deep Forest
+    '#2d7a57', // Rich Emerald
+    '#4d9b75', // Medium Sage
+    '#7cb999', // Mint Green
+    '#b2dec5', // Soft Mint
+    '#f6d892'  // Warm Ochre
   ];
 
   if (categoryChartInstance) categoryChartInstance.destroy();
@@ -99,10 +99,10 @@ function renderStatusChart(data) {
   // Order by standard lifecycle
   const order = ['Submitted', 'Under Review', 'In Progress', 'Resolved'];
   const statusColorMap = {
-    'Submitted': '#e11d48',
-    'Under Review': '#d97706',
-    'In Progress': '#2563eb',
-    'Resolved': '#16a34a'
+    'Submitted': '#b91c1c',
+    'Under Review': '#b45309',
+    'In Progress': '#0369a1',
+    'Resolved': '#15803d'
   };
 
   const countMap = {};

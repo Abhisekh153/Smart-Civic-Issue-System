@@ -111,10 +111,10 @@ function initDetailMap(lat, lng, complaint) {
 
   // Status color
   const statusColorMap = {
-    'Submitted': '#e11d48',
-    'Under Review': '#d97706',
-    'In Progress': '#2563eb',
-    'Resolved': '#16a34a'
+    'Submitted': '#b91c1c',
+    'Under Review': '#b45309',
+    'In Progress': '#0369a1',
+    'Resolved': '#15803d'
   };
 
   const markerColor = statusColorMap[complaint.status] || '#2563eb';

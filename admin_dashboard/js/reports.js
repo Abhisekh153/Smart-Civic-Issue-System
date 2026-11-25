@@ -51,11 +51,11 @@ function renderMonthlyTrends(trends) {
       datasets: [{
         label: 'Grievances Filed',
         data: data,
-        borderColor: '#2563eb',
-        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+        borderColor: '#184e38',
+        backgroundColor: 'rgba(24, 78, 56, 0.1)',
         fill: true,
         tension: 0.35,
-        pointBackgroundColor: '#2563eb',
+        pointBackgroundColor: '#184e38',
         pointRadius: 5
       }]
     },
@@ -85,7 +85,7 @@ function renderCategoryBreakdown(categories) {
 
   const labels = categories.map(c => c.category_name);
   const data = categories.map(c => c.count);
-  const colors = ['#2563eb', '#f59e0b', '#06b6d4', '#8b5cf6', '#ec4899', '#10b981'];
+  const colors = ['#184e38', '#2d7a57', '#4d9b75', '#7cb999', '#b2dec5', '#f6d892'];
 
   if (categoryReportChart) categoryReportChart.destroy();
 
@@ -119,10 +119,10 @@ function renderStatusBreakdown(statuses) {
 
   const order = ['Submitted', 'Under Review', 'In Progress', 'Resolved'];
   const colorMap = {
-    'Submitted': '#e11d48',
-    'Under Review': '#d97706',
-    'In Progress': '#2563eb',
-    'Resolved': '#16a34a'
+    'Submitted': '#b91c1c',
+    'Under Review': '#b45309',
+    'In Progress': '#0369a1',
+    'Resolved': '#15803d'
   };
 
   const countMap = {};

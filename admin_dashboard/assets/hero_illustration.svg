@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8f3ed"/>
+      <stop offset="100%" stop-color="#d5e8dc"/>
+    </linearGradient>
+  </defs>
+  <!-- Background soft rounded card -->
+  <rect width="500" height="400" rx="24" fill="url(#bgGrad)"/>
+  
+  <!-- Sun -->
+  <circle cx="410" cy="80" r="32" fill="#f6d892"/>
+  
+  <!-- Back Buildings (wireframe grid style) -->
+  <rect x="50" y="240" width="85" height="130" fill="none" stroke="#a4c2b2" stroke-width="4"/>
+  <line x1="50" y1="270" x2="135" y2="270" stroke="#a4c2b2" stroke-width="3"/>
+  <line x1="50" y1="300" x2="135" y2="300" stroke="#a4c2b2" stroke-width="3"/>
+  <line x1="50" y1="330" x2="135" y2="330" stroke="#a4c2b2" stroke-width="3"/>
+  <line x1="78" y1="240" x2="78" y2="370" stroke="#a4c2b2" stroke-width="3"/>
+  <line x1="107" y1="240" x2="107" y2="370" stroke="#a4c2b2" stroke-width="3"/>
+
+  <rect x="290" y="260" width="160" height="110" fill="none" stroke="#a4c2b2" stroke-width="4"/>
+  <line x1="290" y1="290" x2="450" y2="290" stroke="#a4c2b2" stroke-width="3"/>
+  <line x1="290" y1="320" x2="450" y2="320" stroke="#a4c2b2" stroke-width="3"/>
+  <line x1="290" y1="350" x2="450" y2="350" stroke="#a4c2b2" stroke-width="3"/>
+  <line x1="330" y1="260" x2="330" y2="370" stroke="#a4c2b2" stroke-width="3"/>
+  <line x1="370" y1="260" x2="370" y2="370" stroke="#a4c2b2" stroke-width="3"/>
+  <line x1="410" y1="260" x2="410" y2="370" stroke="#a4c2b2" stroke-width="3"/>
+
+  <!-- Road perspective -->
+  <polygon points="120,380 380,380 280,320 220,320" fill="#889890"/>
+  <line x1="250" y1="325" x2="250" y2="340" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  <line x1="250" y1="355" x2="250" y2="375" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Tree trunk -->
+  <rect x="238" y="300" width="24" height="60" rx="3" fill="#8d6e52"/>
+
+  <!-- Tree Foliage (Green cloud layers) -->
+  <circle cx="215" cy="290" r="48" fill="#4d8969"/>
+  <circle cx="285" cy="290" r="48" fill="#4d8969"/>
+  <circle cx="250" cy="250" r="54" fill="#3d7857"/>
+
+  <!-- Location Pin on Tree -->
+  <path d="M250,225 C236,225 225,236 225,250 C225,268 250,290 250,290 C250,290 275,268 275,250 C275,236 264,225 250,225 Z" fill="#184e38"/>
+  <circle cx="250" cy="248" r="8" fill="#ffffff"/>
+  <circle cx="250" cy="248" r="4" fill="#184e38"/>
+
+  <!-- Ground curve -->
+  <path d="M0,360 Q250,340 500,360 L500,400 L0,400 Z" fill="#cadfd2"/>
+</svg>

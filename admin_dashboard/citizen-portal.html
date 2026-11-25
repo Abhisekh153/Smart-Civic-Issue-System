@@ -3,182 +3,603 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Grievances - Citizen Portal</title>
+  <title>Civic Intelligence - Citizen Portal</title>
   
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 
   <style>
-    .citizen-header {
+    .portal-main-container {
+      max-width: 1200px;
+      margin: 32px auto 60px;
+      padding: 0 24px;
+    }
+
+    /* Tab switching styles */
+    .portal-view-section {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .portal-view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Home View (Image 6) */
+    .home-top-grid {
+      display: grid;
+      grid-template-columns: 1.7fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .activity-stats-card {
       background: #ffffff;
-      border-bottom: 1px solid var(--border-color);
-      padding: 18px 32px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-xs);
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 50;
     }
 
-    .portal-logo {
+    .stat-row-item {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      padding: 16px 0;
+      border-bottom: 1px solid #f1f5f9;
     }
 
-    .portal-logo-icon {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #fff;
-      border-radius: 10px;
+    .stat-row-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .stat-row-number {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+
+    .stat-row-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Profile View (Image 4) */
+    .profile-layout-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 28px;
+    }
+
+    .profile-card-left {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 36px 24px;
+      text-align: center;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .profile-avatar-large {
+      width: 90px;
+      height: 90px;
+      border-radius: 24px;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .profile-avatar-badge {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 26px;
+      height: 26px;
+      background: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      color: #10b981;
+      font-size: 13px;
     }
 
-    .citizen-body {
-      max-width: 1100px;
-      margin: 32px auto;
-      padding: 0 20px;
-    }
-
-    .complaint-card {
+    .profile-menu-list {
       background: #ffffff;
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 20px 24px;
-      margin-bottom: 16px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .profile-menu-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-      transition: all 0.2s ease;
-      box-shadow: var(--shadow-sm);
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+      text-decoration: none;
+      color: var(--text-main);
+      transition: background 0.15s ease;
     }
 
-    .complaint-card:hover {
-      border-color: #cbd5e1;
-      box-shadow: var(--shadow-md);
+    .profile-menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .profile-menu-item:hover {
+      background: #f8fafc;
+    }
+
+    .profile-menu-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .profile-menu-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .profile-menu-title {
+      font-size: 14.5px;
+      font-weight: 600;
+    }
+
+    .profile-logout-card {
+      margin-top: 20px;
+      background: #fff1f2;
+      border: 1px solid #ffe4e6;
+      border-radius: var(--radius-md);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #e11d48;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .profile-logout-card:hover {
+      background: #ffe4e6;
+    }
+
+    /* Help Banner (Image 2) */
+    .support-help-banner {
+      background: #eaf5ee;
+      border: 1px solid #d0ebd8;
+      border-radius: var(--radius-md);
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .support-help-banner i {
+      font-size: 22px;
+      color: var(--primary);
+    }
+
+    .support-help-banner h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .support-help-banner p {
+      font-size: 12px;
+      color: #596761;
+      margin-top: 2px;
     }
   </style>
 </head>
-<body style="background: #f8fafc; min-height: 100vh; display: block;">
+<body style="background: var(--bg-body); min-height: 100vh; display: block;">
 
-  <!-- Header -->
-  <header class="citizen-header">
-    <div class="portal-logo">
-      <div class="portal-logo-icon">
-        <i class="fa-solid fa-bullhorn"></i>
-      </div>
-      <div>
-        <h2 style="font-size: 16px; font-weight: 700; color: #0f172a;">Citizen Grievance Portal</h2>
-        <p style="font-size: 11.5px; color: #64748b;">Smart Civic Issue Reporting System &bull; Tezpur University</p>
+  <!-- Global Civic Intelligence Navbar (Matching Images 2, 4, 5, 6) -->
+  <header class="civic-navbar">
+    <div class="brand-group">
+      <img src="assets/civic_logo.svg" alt="Civic Intelligence Logo" class="brand-icon">
+      <div class="brand-text">
+        <h2>Civic</h2>
+        <span>Intelligence</span>
       </div>
     </div>
 
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <a href="report-issue.html" class="btn btn-primary">
-        <i class="fa-solid fa-plus"></i>
-        <span>Report New Issue</span>
+    <!-- Center Navigation Tabs -->
+    <nav class="navbar-center-links">
+      <a href="javascript:void(0)" class="nav-tab-link active" id="tabNavHome" onclick="navigateToView('home')">
+        Home
+      </a>
+      <a href="report-issue.html" class="nav-tab-link" id="tabNavReport">
+        Report an issue
+      </a>
+      <a href="javascript:void(0)" class="nav-tab-link" id="tabNavReports" onclick="navigateToView('reports')">
+        My reports
+      </a>
+      <a href="javascript:void(0)" class="nav-tab-link" id="tabNavProfile" onclick="navigateToView('profile')">
+        Profile
+      </a>
+    </nav>
+
+    <!-- Right Header Actions -->
+    <div class="navbar-actions">
+      <!-- Notification Bell -->
+      <button class="icon-btn-round" title="Notifications" onclick="showToast('You have 2 updates from the campus estate office', 'info')">
+        <i class="fa-regular fa-bell"></i>
+        <span class="icon-badge-dot"></span>
+      </button>
+
+      <!-- User Profile Pill -->
+      <a href="javascript:void(0)" class="user-profile-pill" onclick="navigateToView('profile')">
+        <div class="user-avatar-mini" id="navAvatarInitials">CT</div>
+        <span class="user-profile-name" id="navUserName">Citizen</span>
+        <i class="fa-solid fa-chevron-right" style="font-size: 11px; color: #9ca3af; margin-left: 2px;"></i>
       </a>
 
-      <div style="display: flex; align-items: center; gap: 10px; border-left: 1px solid var(--border-color); padding-left: 16px;">
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;" id="citAvatar">
-          CT
-        </div>
-        <div>
-          <h4 style="font-size: 13px; font-weight: 600;" id="citName">Citizen</h4>
-          <p style="font-size: 11px; color: var(--text-muted);" id="citEmail">citizen@email.com</p>
-        </div>
-        <button class="btn btn-outline btn-sm" onclick="logoutCitizen()" style="margin-left: 8px;" title="Logout">
-          <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        </button>
-      </div>
+      <!-- + Report an Issue Button -->
+      <a href="report-issue.html" class="btn btn-primary btn-pill">
+        <i class="fa-solid fa-plus"></i>
+        <span>Report an issue</span>
+      </a>
+
+      <!-- Switch to Admin Console -->
+      <a href="login.html" class="btn btn-outline btn-pill" title="Administrator Console" style="padding: 7px 14px; font-size: 12px;">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Admin</span>
+      </a>
     </div>
   </header>
 
-  <!-- Body -->
-  <div class="citizen-body">
+  <!-- Main Container -->
+  <main class="portal-main-container">
 
-    <!-- KPI Summary Cards -->
-    <div class="metrics-grid" style="margin-bottom: 28px;">
-      <div class="metric-card">
-        <div class="metric-info">
-          <p>My Total Grievances</p>
-          <h3 id="citTotalComplaints">0</h3>
+    <!-- ================= VIEW 1: HOME VIEW (Image 6) ================= -->
+    <section id="sectionHome" class="portal-view-section active">
+      
+      <div style="margin-bottom: 24px;">
+        <h1 style="font-size: 26px; font-weight: 800; color: #111827; letter-spacing: -0.5px;">
+          Hello, <span id="welcomeCitizenName">Citizen</span> 👋
+        </h1>
+        <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;">
+          Let's make our neighbourhood better.
+        </p>
+      </div>
+
+      <!-- Top Row: Hero Banner + Your Activity -->
+      <div class="home-top-grid">
+        
+        <!-- Hero Action Card -->
+        <div class="hero-action-card">
+          <div>
+            <div class="hero-tag">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>Community Action</span>
+            </div>
+            <h1>See a problem?<br>Let's solve it.</h1>
+            <p>Report local issues in a few simple steps and help your city and university campus respond better.</p>
+            <a href="report-issue.html" class="btn btn-white btn-pill">
+              <i class="fa-solid fa-plus" style="color: var(--primary);"></i>
+              <span>Report an Issue</span>
+            </a>
+          </div>
+
+          <div class="hero-illustration-slot">
+            <img src="assets/hero_illustration.svg" alt="Civic Community">
+          </div>
         </div>
-        <div class="metric-icon blue"><i class="fa-solid fa-folder-open"></i></div>
-      </div>
 
-      <div class="metric-card">
-        <div class="metric-info">
-          <p>Resolved</p>
-          <h3 id="citResolvedComplaints">0</h3>
+        <!-- Activity Stats Card -->
+        <div class="activity-stats-card">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); letter-spacing: 1.5px; text-transform: uppercase;">
+              Your Activity
+            </div>
+            <h3 style="font-size: 19px; font-weight: 800; color: #111827; margin-top: 4px;">
+              Making a difference
+            </h3>
+          </div>
+
+          <div style="margin-top: 16px;">
+            <div class="stat-row-item">
+              <span class="stat-row-number" id="homeCountTotal">--</span>
+              <span class="stat-row-label">Reports filed</span>
+            </div>
+            <div class="stat-row-item">
+              <span class="stat-row-number" id="homeCountReview" style="color: #b45309;">--</span>
+              <span class="stat-row-label">Under review</span>
+            </div>
+            <div class="stat-row-item">
+              <span class="stat-row-number" id="homeCountResolved" style="color: #15803d;">--</span>
+              <span class="stat-row-label">Resolved</span>
+            </div>
+          </div>
         </div>
-        <div class="metric-icon green"><i class="fa-solid fa-circle-check"></i></div>
+
       </div>
 
-      <div class="metric-card">
-        <div class="metric-info">
-          <p>In Progress / Review</p>
-          <h3 id="citActiveComplaints">0</h3>
+      <!-- Common Issues Grid (Image 6) -->
+      <div style="margin-bottom: 36px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 17px; font-weight: 800; color: #111827;">Common issues</h3>
+          <a href="report-issue.html" style="font-size: 13px; font-weight: 700; color: var(--primary); text-decoration: none;">View all &rarr;</a>
         </div>
-        <div class="metric-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
+
+        <div class="categories-card-grid">
+          <a href="report-issue.html?cat=1" class="category-action-card">
+            <div class="category-action-left">
+              <i class="fa-solid fa-road category-action-icon"></i>
+              <span class="category-action-name">Road damage</span>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="font-size: 11px; color: #9ca3af;"></i>
+          </a>
+
+          <a href="report-issue.html?cat=2" class="category-action-card">
+            <div class="category-action-left">
+              <i class="fa-solid fa-trash-can category-action-icon"></i>
+              <span class="category-action-name">Garbage</span>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="font-size: 11px; color: #9ca3af;"></i>
+          </a>
+
+          <a href="report-issue.html?cat=3" class="category-action-card">
+            <div class="category-action-left">
+              <i class="fa-solid fa-droplet category-action-icon"></i>
+              <span class="category-action-name">Drainage</span>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="font-size: 11px; color: #9ca3af;"></i>
+          </a>
+
+          <a href="report-issue.html?cat=4" class="category-action-card">
+            <div class="category-action-left">
+              <i class="fa-regular fa-lightbulb category-action-icon"></i>
+              <span class="category-action-name">Streetlights</span>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="font-size: 11px; color: #9ca3af;"></i>
+          </a>
+        </div>
       </div>
-    </div>
 
-    <!-- Grievances List Header -->
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-      <h3 style="font-size: 17px; font-weight: 700; color: #0f172a;">
-        <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> My Submitted Issues
-      </h3>
-      <a href="report-issue.html" class="btn btn-outline btn-sm">
-        <i class="fa-solid fa-camera"></i>
-        <span>Submit Another Complaint</span>
-      </a>
-    </div>
+      <!-- Recent Reports Section -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 17px; font-weight: 800; color: #111827;">Recent reports</h3>
+          <a href="javascript:void(0)" onclick="navigateToView('reports')" style="font-size: 13px; font-weight: 700; color: var(--primary); text-decoration: none;">See all &rarr;</a>
+        </div>
 
-    <!-- Container for Complaints -->
-    <div id="complaintsContainer">
-      <div style="text-align: center; padding: 48px 0;">
-        <span class="loading-spinner"></span>
-        <p style="margin-top: 10px; color: var(--text-muted);">Loading your submitted issues...</p>
+        <div id="homeRecentReportsGrid" class="reports-card-grid">
+          <!-- Loaded dynamically -->
+        </div>
       </div>
-    </div>
 
-  </div>
+    </section>
 
-  <!-- Real-Time Tracking Modal -->
+    <!-- ================= VIEW 2: MY REPORTS (Image 2) ================= -->
+    <section id="sectionReports" class="portal-view-section">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div>
+          <h1 style="font-size: 26px; font-weight: 800; color: #111827; letter-spacing: -0.5px;">My Reports</h1>
+          <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">Track and monitor all your filed civic grievances</p>
+        </div>
+        <button class="icon-btn-round" title="Alerts">
+          <i class="fa-regular fa-bell"></i>
+        </button>
+      </div>
+
+      <!-- Search & Filter Bar (Image 2) -->
+      <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+        <div class="search-box" style="flex: 1;">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="citizenSearchReportInput" placeholder="Search reports or reference ID...">
+        </div>
+        <button class="icon-btn-round" style="border-radius: var(--radius-sm);" title="Filter options">
+          <i class="fa-solid fa-sliders"></i>
+        </button>
+      </div>
+
+      <!-- Filter Chips (Image 2) -->
+      <div class="filter-chips-bar">
+        <button class="filter-chip active" id="chipAll" onclick="filterReportsList('all')">
+          <span>All</span> <span id="chipAllCount" style="opacity: 0.9;">--</span>
+        </button>
+        <button class="filter-chip" id="chipOpen" onclick="filterReportsList('open')">
+          <span>Open</span> <span id="chipOpenCount" style="opacity: 0.9;">--</span>
+        </button>
+        <button class="filter-chip" id="chipResolved" onclick="filterReportsList('resolved')">
+          <span>Resolved</span> <span id="chipResolvedCount" style="opacity: 0.9;">--</span>
+        </button>
+      </div>
+
+      <!-- Reports Count Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-size: 12.5px; color: var(--text-muted);">
+        <div>
+          <strong id="reportsSummaryTotal" style="color: #111827;">0 total reports</strong> &bull; Updated just now
+        </div>
+        <div style="font-weight: 600; cursor: pointer;">
+          Newest first <i class="fa-solid fa-angle-down" style="font-size: 10px;"></i>
+        </div>
+      </div>
+
+      <!-- Report Cards List (Image 2) -->
+      <div id="myReportsListGrid" class="reports-card-grid">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Bottom Support Banner (Image 2) -->
+      <div class="support-help-banner">
+        <i class="fa-regular fa-circle-question"></i>
+        <div>
+          <h4>Can't find a report?</h4>
+          <p>Search by your reference number (e.g. CI-2026-00001) or contact campus estate support.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= VIEW 3: PROFILE (Image 4) ================= -->
+    <section id="sectionProfile" class="portal-view-section">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h1 style="font-size: 26px; font-weight: 800; color: #111827; letter-spacing: -0.5px;">Profile</h1>
+        <button class="icon-btn-round" title="Edit Profile">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+      </div>
+
+      <div class="profile-layout-grid">
+        
+        <!-- Left Citizen Identity Card (Image 4) -->
+        <div class="profile-card-left">
+          <div class="profile-avatar-large" id="profileLargeAvatar">
+            CT
+            <div class="profile-avatar-badge">
+              <i class="fa-solid fa-check"></i>
+            </div>
+          </div>
+          <h2 style="font-size: 20px; font-weight: 800; color: #111827;" id="profileCitizenName">Citizen Name</h2>
+          <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;" id="profileCitizenEmail">citizen@tezu.ac.in</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 28px; padding-top: 24px; border-top: 1px solid #f1f5f9;">
+            <div>
+              <div style="font-size: 22px; font-weight: 800; color: #111827;" id="profileStatReports">0</div>
+              <div style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 2px;">Reports</div>
+            </div>
+            <div>
+              <div style="font-size: 22px; font-weight: 800; color: #15803d;" id="profileStatResolved">0</div>
+              <div style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 2px;">Resolved</div>
+            </div>
+            <div>
+              <div style="font-size: 22px; font-weight: 800; color: #111827;">2 yrs</div>
+              <div style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 2px;">Member</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Settings Menu (Image 4) -->
+        <div>
+          <div class="profile-menu-list">
+            
+            <a href="javascript:void(0)" class="profile-menu-item" onclick="showToast('Profile editing enabled for student/resident', 'info')">
+              <div class="profile-menu-left">
+                <div class="profile-menu-icon"><i class="fa-regular fa-user"></i></div>
+                <div class="profile-menu-title">Personal information</div>
+              </div>
+              <i class="fa-solid fa-chevron-right" style="font-size: 12px; color: #9ca3af;"></i>
+            </a>
+
+            <a href="javascript:void(0)" class="profile-menu-item" onclick="navigateToView('reports')">
+              <div class="profile-menu-left">
+                <div class="profile-menu-icon"><i class="fa-regular fa-file-lines"></i></div>
+                <div class="profile-menu-title">My reports</div>
+              </div>
+              <i class="fa-solid fa-chevron-right" style="font-size: 12px; color: #9ca3af;"></i>
+            </a>
+
+            <a href="javascript:void(0)" class="profile-menu-item" onclick="showToast('All notifications are current', 'info')">
+              <div class="profile-menu-left">
+                <div class="profile-menu-icon"><i class="fa-regular fa-bell"></i></div>
+                <div class="profile-menu-title">Notifications</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">2</span>
+                <i class="fa-solid fa-chevron-right" style="font-size: 12px; color: #9ca3af;"></i>
+              </div>
+            </a>
+
+            <a href="javascript:void(0)" class="profile-menu-item" onclick="showToast('Security settings verified', 'info')">
+              <div class="profile-menu-left">
+                <div class="profile-menu-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="profile-menu-title">Privacy &amp; security</div>
+              </div>
+              <i class="fa-solid fa-chevron-right" style="font-size: 12px; color: #9ca3af;"></i>
+            </a>
+
+            <a href="javascript:void(0)" class="profile-menu-item" onclick="showToast('Contact support: estate@tezu.ac.in', 'info')">
+              <div class="profile-menu-left">
+                <div class="profile-menu-icon"><i class="fa-regular fa-circle-question"></i></div>
+                <div class="profile-menu-title">Help &amp; support</div>
+              </div>
+              <i class="fa-solid fa-chevron-right" style="font-size: 12px; color: #9ca3af;"></i>
+            </a>
+
+            <a href="javascript:void(0)" class="profile-menu-item" onclick="showToast('Civic Intelligence Version 1.0.0 - Tezpur University Minor Project', 'info')">
+              <div class="profile-menu-left">
+                <div class="profile-menu-icon"><i class="fa-solid fa-circle-info"></i></div>
+                <div class="profile-menu-title">About Civic Intelligence</div>
+              </div>
+              <i class="fa-solid fa-chevron-right" style="font-size: 12px; color: #9ca3af;"></i>
+            </a>
+
+          </div>
+
+          <!-- Log Out Button Card (Image 4) -->
+          <div class="profile-logout-card" onclick="logoutCitizen()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Log out</span>
+          </div>
+
+          <div style="text-align: center; margin-top: 24px; font-size: 11px; color: #9ca3af; line-height: 1.5;">
+            Civic Intelligence &bull; Version 1.0.0<br>
+            Report. Analyse. Improve. &bull; Tezpur University
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Track Issue Timeline Modal -->
   <div class="modal-overlay" id="trackModal">
-    <div class="modal-card" style="max-width: 650px;">
+    <div class="modal-card">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-route" style="color: var(--primary);"></i> Issue Resolution Timeline</h3>
+        <h3 id="trackModalHeading"><i class="fa-solid fa-route" style="color: var(--primary);"></i> Report Progress</h3>
         <button class="modal-close" onclick="closeTrackModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
-        
-        <div id="trackSummary" style="background: #f8fafc; border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 20px;">
-          <!-- Loaded dynamically -->
-        </div>
-
-        <h4 style="font-size: 13.5px; font-weight: 700; color: #0f172a; margin-bottom: 14px;">
-          Administrative Audit Trail
-        </h4>
-        <div class="timeline" id="trackTimeline">
-          <!-- Timeline events -->
-        </div>
-
+        <div id="trackSummaryCard" style="background: var(--bg-body); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 18px; margin-bottom: 22px;"></div>
+        <h4 style="font-size: 13.5px; font-weight: 700; color: #111827; margin-bottom: 14px;">Resolution Milestones</h4>
+        <div class="timeline" id="trackTimeline"></div>
       </div>
     </div>
   </div>
@@ -188,6 +609,8 @@
   <script src="js/api.js"></script>
   <script>
     let activeCitizen = null;
+    let allComplaints = [];
+    let currentFilter = 'all';
 
     document.addEventListener('DOMContentLoaded', () => {
       const stored = localStorage.getItem('activeCitizen');
@@ -195,102 +618,200 @@
         window.location.href = 'citizen-login.html';
         return;
       }
-
       activeCitizen = JSON.parse(stored);
-      document.getElementById('citName').textContent = activeCitizen.name;
-      document.getElementById('citEmail').textContent = activeCitizen.email;
-      document.getElementById('citAvatar').textContent = activeCitizen.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
-      loadCitizenComplaints();
+      // Populate User Identity
+      const initials = activeCitizen.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('navUserName').textContent = activeCitizen.name;
+      document.getElementById('navAvatarInitials').textContent = initials;
+      document.getElementById('welcomeCitizenName').textContent = activeCitizen.name.split(' ')[0];
+      document.getElementById('profileCitizenName').textContent = activeCitizen.name;
+      document.getElementById('profileCitizenEmail').textContent = activeCitizen.email;
+      document.getElementById('profileLargeAvatar').innerHTML = `${initials}<div class="profile-avatar-badge"><i class="fa-solid fa-check"></i></div>`;
+
+      // Check URL query parameters (e.g. ?view=reports)
+      const urlParams = new URLSearchParams(window.location.search);
+      const view = urlParams.get('view');
+      if (view === 'reports') {
+        navigateToView('reports');
+      } else if (view === 'profile') {
+        navigateToView('profile');
+      }
+
+      loadCitizenData();
+      setupSearchListener();
     });
 
-    function logoutCitizen() {
-      if (confirm('Do you want to log out of the Citizen Portal?')) {
-        localStorage.removeItem('activeCitizen');
-        window.location.href = 'citizen-login.html';
+    function navigateToView(viewName) {
+      document.querySelectorAll('.portal-view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-link').forEach(el => el.classList.remove('active'));
+
+      if (viewName === 'home') {
+        document.getElementById('sectionHome').classList.add('active');
+        document.getElementById('tabNavHome').classList.add('active');
+      } else if (viewName === 'reports') {
+        document.getElementById('sectionReports').classList.add('active');
+        document.getElementById('tabNavReports').classList.add('active');
+      } else if (viewName === 'profile') {
+        document.getElementById('sectionProfile').classList.add('active');
+        document.getElementById('tabNavProfile').classList.add('active');
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    async function loadCitizenComplaints() {
-      const container = document.getElementById('complaintsContainer');
+    async function loadCitizenData() {
       try {
         const res = await fetch(`/api/citizen/complaints/user/${activeCitizen.user_id}`);
         const data = await res.json();
 
         if (res.ok && data.success) {
-          const list = data.complaints || [];
+          allComplaints = data.complaints || [];
 
-          // Update Counters
-          document.getElementById('citTotalComplaints').textContent = list.length;
-          document.getElementById('citResolvedComplaints').textContent = list.filter(c => c.status === 'Resolved').length;
-          document.getElementById('citActiveComplaints').textContent = list.filter(c => c.status !== 'Resolved').length;
+          // Calculate counters
+          const total = allComplaints.length;
+          const resolved = allComplaints.filter(c => c.status === 'Resolved').length;
+          const open = total - resolved;
+          const underReview = allComplaints.filter(c => c.status === 'Under Review' || c.status === 'Submitted').length;
 
-          if (list.length === 0) {
-            container.innerHTML = `
-              <div class="card" style="padding: 48px; text-align: center;">
-                <div style="font-size: 42px; color: #94a3b8; margin-bottom: 12px;">
-                  <i class="fa-solid fa-clipboard-check"></i>
-                </div>
-                <h4 style="font-size: 16px; font-weight: 600;">No Issues Reported Yet</h4>
-                <p style="font-size: 13px; color: #64748b; margin-top: 4px; margin-bottom: 20px;">
-                  Notice a pothole, uncollected garbage, or broken streetlight? Report it right now!
-                </p>
-                <a href="report-issue.html" class="btn btn-primary" style="display: inline-flex;">
-                  <i class="fa-solid fa-plus"></i> Report Civic Issue
-                </a>
-              </div>
-            `;
-            return;
-          }
+          // Update Home Activity (Image 6)
+          document.getElementById('homeCountTotal').textContent = total;
+          document.getElementById('homeCountReview').textContent = underReview;
+          document.getElementById('homeCountResolved').textContent = resolved;
 
-          container.innerHTML = list.map(c => `
-            <div class="complaint-card">
-              <div style="display: flex; gap: 16px; align-items: center; flex: 1;">
-                <div style="width: 72px; height: 72px; border-radius: 8px; overflow: hidden; background: #0f172a; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                  <img src="${c.image_path ? '/' + c.image_path : 'assets/placeholder.svg'}" alt="Proof" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <div style="flex: 1;">
-                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-                    <span style="font-size: 12px; font-weight: 700; color: var(--primary);">Complaint #${c.complaint_id}</span>
-                    <span style="font-size: 12.5px; font-weight: 600; color: #1e293b;">
-                      <i class="fa-solid ${c.category_icon || 'fa-tag'}" style="color: var(--primary); margin-right: 4px;"></i>
-                      ${c.category_name}
-                    </span>
-                    ${getStatusBadge(c.status)}
-                  </div>
-                  <div style="font-size: 13.5px; color: #334155; margin-bottom: 4px; line-height: 1.4;">
-                    ${c.description}
-                  </div>
-                  <div style="font-size: 12px; color: #64748b;">
-                    <i class="fa-solid fa-location-dot" style="color: #ef4444; margin-right: 4px;"></i> ${c.address}
-                    &bull; <i class="fa-regular fa-calendar" style="margin-left: 6px; margin-right: 2px;"></i> ${formatDate(c.created_at)}
-                  </div>
-                </div>
-              </div>
+          // Update Profile (Image 4)
+          document.getElementById('profileStatReports').textContent = total;
+          document.getElementById('profileStatResolved').textContent = resolved;
 
-              <div>
-                <button class="btn btn-outline btn-sm" onclick="trackIssue(${c.complaint_id})">
-                  <i class="fa-solid fa-route"></i>
-                  <span>Track Status</span>
-                </button>
-              </div>
-            </div>
-          `).join('');
+          // Update Filter Chips (Image 2)
+          document.getElementById('chipAllCount').textContent = total;
+          document.getElementById('chipOpenCount').textContent = open;
+          document.getElementById('chipResolvedCount').textContent = resolved;
+          document.getElementById('reportsSummaryTotal').textContent = `${total} total reports`;
 
-        } else {
-          container.innerHTML = `<div style="color: #ef4444; text-align: center; padding: 24px;">Failed to load complaints.</div>`;
+          // Render cards
+          renderReportsList();
+          renderHomeRecentList();
         }
       } catch (err) {
-        container.innerHTML = `<div style="color: #ef4444; text-align: center; padding: 24px;">Connection error.</div>`;
+        console.error('Error fetching complaints:', err);
       }
     }
 
-    async function trackIssue(complaintId) {
+    function renderReportsList() {
+      const container = document.getElementById('myReportsListGrid');
+      const search = (document.getElementById('citizenSearchReportInput').value || '').toLowerCase().trim();
+
+      let filtered = allComplaints;
+
+      if (currentFilter === 'open') {
+        filtered = filtered.filter(c => c.status !== 'Resolved');
+      } else if (currentFilter === 'resolved') {
+        filtered = filtered.filter(c => c.status === 'Resolved');
+      }
+
+      if (search) {
+        filtered = filtered.filter(c => 
+          c.description.toLowerCase().includes(search) || 
+          c.address.toLowerCase().includes(search) || 
+          c.category_name.toLowerCase().includes(search) || 
+          String(c.complaint_id).includes(search)
+        );
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; background: #ffffff; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 48px; text-align: center;">
+            <i class="fa-regular fa-folder-open" style="font-size: 38px; color: #9ca3af; margin-bottom: 12px;"></i>
+            <h4 style="font-size: 15px; font-weight: 700; color: #111827;">No reports found</h4>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">There are no complaints matching your current filter.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Render cards matching Image 2
+      container.innerHTML = filtered.map(c => `
+        <div class="report-item-card" onclick="openTrackModal(${c.complaint_id})" style="cursor: pointer;">
+          <div class="report-item-thumb">
+            <img src="${c.image_path ? '/' + c.image_path : 'assets/placeholder.svg'}" alt="Evidence">
+          </div>
+          <div class="report-item-content">
+            <div style="margin-bottom: 3px;">
+              ${getStatusBadge(c.status)}
+            </div>
+            <div class="report-item-title" title="${c.description}">
+              ${c.description}
+            </div>
+            <div class="report-item-meta">
+              <span>CI-2026-${String(c.complaint_id).padStart(5, '0')}</span>
+              &bull;
+              <span><i class="fa-regular fa-clock"></i> ${formatDate(c.created_at)}</span>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right report-item-arrow"></i>
+        </div>
+      `).join('');
+    }
+
+    function renderHomeRecentList() {
+      const container = document.getElementById('homeRecentReportsGrid');
+      const recent = allComplaints.slice(0, 3);
+
+      if (recent.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; background: #ffffff; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 36px; text-align: center;">
+            <p style="font-size: 13.5px; color: var(--text-muted);">You haven't reported any issues yet.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = recent.map(c => `
+        <div class="report-item-card" onclick="openTrackModal(${c.complaint_id})" style="cursor: pointer;">
+          <div class="report-item-thumb">
+            <img src="${c.image_path ? '/' + c.image_path : 'assets/placeholder.svg'}" alt="Evidence">
+          </div>
+          <div class="report-item-content">
+            <div style="margin-bottom: 3px;">
+              ${getStatusBadge(c.status)}
+            </div>
+            <div class="report-item-title" title="${c.description}">
+              ${c.description}
+            </div>
+            <div class="report-item-meta">
+              <span>CI-2026-${String(c.complaint_id).padStart(5, '0')}</span>
+              &bull;
+              <span><i class="fa-regular fa-clock"></i> ${formatDate(c.created_at)}</span>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right report-item-arrow"></i>
+        </div>
+      `).join('');
+    }
+
+    function filterReportsList(type) {
+      currentFilter = type;
+      document.getElementById('chipAll').classList.toggle('active', type === 'all');
+      document.getElementById('chipOpen').classList.toggle('active', type === 'open');
+      document.getElementById('chipResolved').classList.toggle('active', type === 'resolved');
+      renderReportsList();
+    }
+
+    function setupSearchListener() {
+      const input = document.getElementById('citizenSearchReportInput');
+      if (input) {
+        input.addEventListener('input', () => {
+          renderReportsList();
+        });
+      }
+    }
+
+    async function openTrackModal(complaintId) {
       const modal = document.getElementById('trackModal');
-      const summary = document.getElementById('trackSummary');
+      const summaryCard = document.getElementById('trackSummaryCard');
       const timeline = document.getElementById('trackTimeline');
 
-      summary.innerHTML = `<span class="loading-spinner"></span> Loading tracking details...`;
+      summaryCard.innerHTML = `<span class="loading-spinner"></span> Loading report details...`;
       timeline.innerHTML = '';
       modal.classList.add('active');
 
@@ -302,25 +823,26 @@
           const c = data.complaint;
           const events = data.timeline || [];
 
-          summary.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <h3 style="font-size: 15px; font-weight: 700; color: #0f172a;">Complaint #${c.complaint_id}</h3>
+          summaryCard.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div>
+                <span style="font-size: 11px; font-weight: 700; color: var(--primary);">CI-2026-${String(c.complaint_id).padStart(5, '0')}</span>
+                <h3 style="font-size: 16px; font-weight: 800; color: #111827; margin-top: 2px;">${c.category_name}</h3>
+              </div>
               ${getStatusBadge(c.status)}
             </div>
-            <div style="font-size: 12.5px; color: #475569; margin-bottom: 4px;">
-              <strong>Category:</strong> ${c.category_name}
-            </div>
+            <p style="font-size: 13.5px; color: #374151; line-height: 1.5; margin-bottom: 10px;">${c.description}</p>
             <div style="font-size: 12px; color: #64748b;">
-              <strong>Reported Location:</strong> ${c.address}
+              <i class="fa-solid fa-location-dot" style="color: #ef4444; margin-right: 4px;"></i> ${c.address}
             </div>
           `;
 
           if (events.length === 0) {
-            timeline.innerHTML = `<div style="color: #64748b; font-size: 12px;">No updates logged yet.</div>`;
+            timeline.innerHTML = `<div style="color: #64748b; font-size: 13px;">No updates logged yet.</div>`;
           } else {
             timeline.innerHTML = [...events].reverse().map((ev, idx) => `
               <div class="timeline-item">
-                <div class="timeline-dot" style="${idx === 0 ? 'background: #16a34a;' : ''}"></div>
+                <div class="timeline-dot" style="${idx === 0 ? 'background: #15803d;' : ''}"></div>
                 <div class="timeline-header">
                   <span class="timeline-status">
                     ${ev.old_status && ev.old_status !== 'None' ? `<span style="color: #64748b; font-size: 12px;">${ev.old_status} &rarr;</span> ` : ''}
@@ -329,22 +851,26 @@
                   <span class="timeline-time">${formatDate(ev.updated_at)}</span>
                 </div>
                 <div class="timeline-remark">
-                  "${ev.admin_remark || 'Status updated by campus admin.'}"
+                  "${ev.admin_remark || 'Action taken by municipal division.'}"
                 </div>
               </div>
             `).join('');
           }
-
-        } else {
-          summary.innerHTML = `<div style="color: #ef4444;">Issue not found.</div>`;
         }
-      } catch (err) {
-        summary.innerHTML = `<div style="color: #ef4444;">Error fetching tracking records.</div>`;
+      } catch (e) {
+        summaryCard.innerHTML = `<div style="color: #ef4444;">Could not load timeline details.</div>`;
       }
     }
 
     function closeTrackModal() {
       document.getElementById('trackModal').classList.remove('active');
+    }
+
+    function logoutCitizen() {
+      if (confirm('Are you sure you want to log out of Civic Intelligence?')) {
+        localStorage.removeItem('activeCitizen');
+        window.location.href = 'citizen-login.html';
+      }
     }
   </script>
 </body>

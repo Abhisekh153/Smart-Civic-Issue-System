@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login - Smart Civic Issue Reporting System</title>
+  <title>Admin Login - Civic Intelligence</title>
   
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 
   <style>
     body.login-page {
-      background: radial-gradient(circle at 10% 20%, #0f172a 0%, #1e293b 90%);
+      background: radial-gradient(circle at 10% 20%, #0d281e 0%, #071711 90%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -31,7 +31,7 @@
       width: 100%;
       background: #ffffff;
       border-radius: var(--radius-lg);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
       padding: 40px 36px;
       position: relative;
     }
@@ -42,30 +42,25 @@
     }
 
     .login-logo {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      border-radius: 12px;
+      width: 58px;
+      height: 58px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-size: 26px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.35);
+      margin-bottom: 14px;
     }
 
     .login-header h1 {
       font-size: 22px;
-      font-weight: 700;
-      color: #0f172a;
+      font-weight: 800;
+      color: #111827;
       letter-spacing: -0.3px;
     }
 
     .login-header p {
       font-size: 13px;
-      color: #64748b;
-      margin-top: 6px;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
 
     .password-wrapper {
@@ -74,41 +69,41 @@
 
     .password-toggle-btn {
       position: absolute;
-      right: 12px;
+      right: 14px;
       top: 50%;
       transform: translateY(-50%);
       background: none;
       border: none;
-      color: #94a3b8;
+      color: #9ca3af;
       cursor: pointer;
       font-size: 15px;
       padding: 4px;
     }
 
     .password-toggle-btn:hover {
-      color: #475569;
+      color: #4b5563;
     }
 
     .demo-credentials-box {
-      background: #f8fafc;
+      background: #f8faf9;
       border: 1px dashed #cbd5e1;
       border-radius: var(--radius-sm);
       padding: 12px 14px;
-      margin-top: 24px;
+      margin-top: 22px;
       font-size: 12px;
       color: #475569;
     }
 
     .demo-credentials-box strong {
-      color: #1e293b;
+      color: #111827;
     }
 
     .demo-btn-fill {
       background: none;
       border: none;
-      color: #2563eb;
+      color: var(--primary);
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       text-decoration: underline;
       cursor: pointer;
       float: right;
@@ -116,11 +111,11 @@
 
     .login-submit-btn {
       width: 100%;
-      padding: 12px;
+      padding: 13px;
       font-size: 14.5px;
-      font-weight: 600;
+      font-weight: 700;
       border-radius: var(--radius-sm);
-      background: #1d4ed8;
+      background: var(--primary);
       color: #ffffff;
       border: none;
       cursor: pointer;
@@ -129,11 +124,11 @@
       justify-content: center;
       gap: 10px;
       transition: background 0.2s ease, transform 0.1s ease;
-      margin-top: 10px;
+      margin-top: 14px;
     }
 
     .login-submit-btn:hover {
-      background: #1e40af;
+      background: var(--primary-hover);
     }
 
     .login-submit-btn:active {
@@ -144,7 +139,7 @@
       text-align: center;
       margin-top: 24px;
       font-size: 12px;
-      color: #94a3b8;
+      color: #94a3af;
     }
   </style>
 </head>
@@ -153,14 +148,14 @@
   <div class="login-container">
     <div class="login-header">
       <div class="login-logo">
-        <i class="fa-solid fa-building-columns"></i>
+        <img src="assets/civic_logo.svg" alt="Civic Intelligence" style="width: 54px; height: 54px;">
       </div>
-      <h1>Admin Portal</h1>
-      <p>Smart Civic Issue Reporting System<br>Tezpur University</p>
+      <h1>Administrator Console</h1>
+      <p>Civic Intelligence &bull; Tezpur University</p>
     </div>
 
     <!-- Alert Box -->
-    <div id="login-alert" style="display: none; padding: 12px 14px; border-radius: 6px; font-size: 13px; margin-bottom: 20px;"></div>
+    <div id="login-alert" style="display: none; padding: 12px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 20px;"></div>
 
     <form id="adminLoginForm">
       <div class="form-group">
@@ -193,7 +188,7 @@
       </div>
 
       <button type="submit" class="login-submit-btn" id="loginSubmitBtn">
-        <span>Sign In to Dashboard</span>
+        <span>Sign In to Console</span>
         <i class="fa-solid fa-arrow-right"></i>
       </button>
 
@@ -206,10 +201,10 @@
     </form>
 
     <div class="login-footer">
-      <div style="margin-bottom: 12px; padding: 10px; background: #eff6ff; border-radius: 6px; border: 1px solid #bfdbfe;">
-        <span style="font-size: 12px; color: #1e40af; font-weight: 500;">Are you a citizen or student reporting an issue?</span><br>
-        <a href="citizen-login.html" style="font-size: 13px; font-weight: 700; color: #1d4ed8; text-decoration: none;">
-          <i class="fa-solid fa-users"></i> Go to Citizen Grievance Portal &rarr;
+      <div style="margin-bottom: 12px; padding: 10px; background: var(--primary-light); border-radius: 8px; border: 1px solid var(--primary-border);">
+        <span style="font-size: 12px; color: var(--primary); font-weight: 600;">Citizen or student filing a grievance?</span><br>
+        <a href="citizen-portal.html" style="font-size: 13px; font-weight: 700; color: var(--primary); text-decoration: none;">
+          <i class="fa-solid fa-users"></i> Open Citizen Grievance Portal &rarr;
         </a>
       </div>
       Tezpur University Minor Project &bull; MCA 2026
